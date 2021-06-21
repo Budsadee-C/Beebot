@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+  <script src="function/normal.js"></script>
+</head>
+<body>
+
+<a href='#' id="openExcel">Download CSV</a>
+
+<script type="text/javascript">
+    $('#openExcel').click(function(e){
+      var object = [];
+      var actGraph = firebase.database().ref('Measurement').orderByChild('SerialNumber').limitToLast(40).equalTo("CKB191019");
+      actGraph.on('value',function(snap){
+        snap.forEach(function(data){
+          object.push({"SerialNumber" : data.val().SerialNumber,"value" : data.val().value,"kind" : data.val().kind,"Type": data.val().Type,"timestamp": data.val().timestamp});
+          //console.log(data.val().value+" data");
+        });
+        // download data
+        var data, filename, link;
+        var csv = convertArrayOfObjectsToCSV({
+            data: object
+        });
+        if (csv == null) return;
+
+        filename = "stock-data.csv"  || 'export.csv';
+
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = 'data:text/csv;charset=utf-8,' + csv;
+        }
+        data = encodeURI(csv);
+
+        link = document.createElement('a');
+        link.setAttribute('href', data);
+        link.setAttribute('download', filename);
+        link.click();
+      });
+      console.log(object);
+    });
+
+
+    function convertArrayOfObjectsToCSV(args) {
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+        data = args.data || null;
+        if (data == null || !data.length)
+        {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function(item) {
+            ctr = 0;
+            keys.forEach(function(key) {
+                if (ctr > 0) result += columnDelimiter;
+
+                result += item[key];
+                ctr++;
+            });
+            result += lineDelimiter;
+        });
+
+        return result;
+    }
+</script>
+</body>
+</html>

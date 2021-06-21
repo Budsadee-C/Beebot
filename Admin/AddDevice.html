@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add Company</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+	<script src="function/normal.js"></script>
+	<script src="function/addDevice.js"></script>
+
+	<style>
+		@media screen and (min-width: 766px) {
+      #user {
+        font-size: 16px;
+				color : DeepSkyBlue;
+      }
+    }
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="#"><span>Beebot</span>Admin</a>
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img src="images/5.jpg" class="img-responsive" alt="">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name" id="user"></div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<ul class="nav menu">
+			<li><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+			<li><a href="ProfileWeb.html"><em class="fa fa-tags">&nbsp;</em> Profile</a></li>
+			<li><a href="company.html"><em class="fa fa-group">&nbsp;</em> Company</a></li>
+			<li><a href="Devices.html"><em class="fa fa-trophy">&nbsp;</em> Devices</a></li>
+			<li><a href="DeviceTypes.html"><em class="fa fa-gears">&nbsp;</em> Device's Type</a>
+				<ul>
+          <li class="active"><em class="fa fa-arrows">&nbsp;</em> Add Device Type</li>
+        </ul>
+			</li>
+			<li><a href="#"><em class="fa fa-pencil-square-o">&nbsp;</em> News</a></li>
+			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+		</ul>
+	</div><!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="index.html">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">Add Device</li>
+			</ol>
+		</div><!--/.row-->
+		<div class="row">
+			<div class="col-lg-12">&nbsp;</div>
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Add Devices
+						<span class="pull-right clickable panel-toggle"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body articles-container">
+						<form class="form-horizontal" action="" method="post">
+							<fieldset>
+								<div class="form-group">
+									<label class="col-md-3 control-label" for="name">Company</label>
+									<div class="col-md-6">
+										<select id="SelectComp" class="form-control">
+											<!--<option value="admin">Administrator</option>
+											<option value="assistant">Assistant</option>
+											<option value="researcher">Researcher</option>
+											<option value="user">General user</option>-->
+										</select>
+									</div>
+								</div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label" for="name">Type</label>
+                  <div class="col-md-6">
+                    <!--<input id="name" name="name" type="text" placeholder="Name" class="form-control">-->
+                    <select id="SelectType" class="form-control">
+        							<!--<option value="admin">Administrator</option>
+        							<option value="assistant">Assistant</option>
+        							<option value="researcher">Researcher</option>
+        							<option value="user">General user</option>-->
+        						</select>
+                  </div>
+                </div>
+								<div class="form-group">
+									<label class="col-md-3 control-label" for="name">Serial</label>
+									<div class="col-md-2">
+										<input id="begin" name="name" type="text" placeholder="Serial" class="form-control">
+									</div>
+                  <div class="col-md-2">
+                    <input id="middle" name="name" type="text" placeholder="Start At" class="form-control">
+                  </div>
+                  <div class="col-md-2">
+                    <input id="last" name="name" type="text" placeholder="End At" class="form-control">
+                  </div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-6 widget-right">
+										<label id="submit" class="btn btn-default btn-md pull-right" href="#">Submit</label>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!-- /.row -->
+    <div class="row">
+      <div class="col-lg-12">&nbsp;</div>
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Lastest Device
+            <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+          <div class="panel-body articles-container" id="showLastest">
+            <!--<div class="article border-bottom">
+              <div class="col-xs-12">
+                <div class="row">
+                  <div class="col-xs-1 col-md-1 date">&nbsp;</div>
+                  <div class="col-xs-11 col-md-11">
+                    Date:
+                    <h5 style="color:teal;">Value</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>-->
+        </div>
+      </div><!--/.col-->
+
+      </div><!--/.row-->
+    </div><!-- /.row -->
+	</div><!--/.main-->
+
+		<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/custom.js"></script>
+
+</body>
+</html>
