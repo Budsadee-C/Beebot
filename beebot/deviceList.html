@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>Beebot: Device List</title>
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script src="js/device.js"></script>
+</head>
+
+<body class="fix-header card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">
+                        <b>
+                            <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        </b>
+                        <span>
+                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                        </span>
+                    </a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down">
+                            <form class="app-search p-l-20">
+                                <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a>
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a id="username" class="nav-link text-muted waves-effect waves-dark" href="" data-toggle="dropdown"><img src="assets/images/users/1.jpg" class="profile-pic m-r-5"/></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                  <ul id="sidebarnav">
+                      <li>
+                          <a href="index.html" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
+                      </li>
+                      <li>
+                          <a href="profile.html" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>Profile</a>
+                      </li>
+                      <li>
+                          <a href="CustomerList.html" class="waves-effect"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Customer</a>
+                      </li>
+                      <li>
+                          <a href="deviceList.html" class="waves-effect"><i class="fa fa-microchip m-r-10" aria-hidden="true"></i>Spectrokits</a>
+                      </li>
+                      <li>
+                          <a href="../login/login.html" class="waves-effect"><i class="fa fa-gear m-r-10" aria-hidden="true"></i>Log out</a>
+                      </li>
+                  </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <h3 class="text-themecolor m-b-0 m-t-0">Spetrokit</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active">Spectrokit</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Device: Spectrokit > <code class="card-title">Pairing</code></h4>
+                                <h6 class="card-subtitle">device pairing</h6>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Serial Number</th>
+                                                <th>Customer</th>
+                                                <th>Assign Time</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="customerList">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Device: Spectrokit Available > <code class="card-title">Matching</code></h4>
+                                <h6 class="card-subtitle">device available: <a href="javascript:void(0)" id="addCustomer"><code>จับคู่</code></a></h6>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Serial Number</th>
+                                                <th>Status</th>
+                                                <th>Assign Time</th>
+                                                <th>Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="customerListNulls">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+        </div>
+    </div>
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/tether.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="js/sidebarmenu.js"></script>
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

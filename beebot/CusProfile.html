@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>Customer Prfile</title>
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script src="js/profile.js"></script>
+</head>
+
+<body class="fix-header card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">
+                        <b>
+                            <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        </b>
+                        <span>
+                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                        </span>
+                    </a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down">
+                            <form class="app-search p-l-20">
+                                <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a>
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a id="username" class="nav-link text-muted waves-effect waves-dark" href="" data-toggle="dropdown"><img src="assets/images/users/1.jpg" class="profile-pic m-r-9"/></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                  <ul id="sidebarnav">
+                      <li>
+                          <a href="index.html" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
+                      </li>
+                      <li>
+                          <a href="profile.html" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>Profile</a>
+                      </li>
+                      <li>
+                          <a href="CustomerList.html" class="waves-effect"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Customer</a>
+                      </li>
+                      <li>
+                          <a href="deviceList.html" class="waves-effect"><i class="fa fa-microchip m-r-10" aria-hidden="true"></i>Spectrokits</a>
+                      </li>
+                      <li>
+                          <a href="../login/login.html" class="waves-effect"><i class="fa fa-gear m-r-10" aria-hidden="true"></i>Log out</a>
+                      </li>
+                  </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <h3 class="text-themecolor m-b-0 m-t-0">Partner Profile</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="CustomerList.html">Partners List</a></li>
+                            <li class="breadcrumb-item active">Partner Profile</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                        <div class="card">
+                            <div class="card-block">
+                                <center class="m-t-30"> <img src="assets/images/users/5.jpg" class="img-circle" width="150" />
+                                    <h4 class="card-title m-t-10" id="fullname"></h4>
+                                    <h6 class="card-subtitle" id="cusLevel"></h6>
+                                    <!--<div class="row text-center justify-content-md-center">
+                                        <h6 class="card-subtitle"><a href="javascript:void(0)" id="addCustomer"><code>แก้ไข user & password</code></a></h6>
+                                    </div>-->
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card">
+                            <div class="card-block">
+                              <form class="form-horizontal form-material" id="detail">
+                                  <div class="form-group">
+                                      <label id="labelName" class="col-md-12">ชื่อ-นามสกุล</label>
+                                      <div class="col-md-12">
+                                          <input id="fullName"type="text"  class="form-control form-control-line" disabled>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelUser"class="col-md-12">Username</label>
+                                      <div class="col-md-12">
+                                          <input id="Cususername" type="text"  class="form-control form-control-line">
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelPass" class="col-md-12">Password</label>
+                                      <div class="col-md-12">
+                                          <input id="password" type="password"  class="form-control form-control-line">
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="example-email" id="labelEmail" class="col-md-12">Email</label>
+                                      <div class="col-md-12">
+                                          <input id="email" type="email" class="form-control form-control-line" name="example-email" id="example-email" disabled>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelTel" class="col-md-12">เบอร์โทรศัพท์</label>
+                                      <div class="col-md-12">
+                                          <input id="telephone" type="text" class="form-control form-control-line" disabled>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelOrgan" class="col-md-12">หน่วยงาน</label>
+                                      <div class="col-md-12">
+                                          <input id="organize" type="text"  class="form-control form-control-line" disabled>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelPro" class="col-md-12">จังหวัด</label>
+                                      <div class="col-md-12">
+                                          <input id="province" type="text"  class="form-control form-control-line" disabled>
+                                      </div>
+                                  </div>
+                                  <!--<div class="form-group">
+                                      <label class="col-md-12">Message</label>
+                                      <div class="col-md-12">
+                                          <textarea rows="5" class="form-control form-control-line"></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="col-sm-12">Select Country</label>
+                                      <div class="col-sm-12">
+                                          <select class="form-control form-control-line">
+                                              <option>London</option>
+                                              <option>India</option>
+                                              <option>Usa</option>
+                                              <option>Canada</option>
+                                              <option>Thailand</option>
+                                          </select>
+                                      </div>
+                                  </div>-->
+                                  <!--<div class="form-group">
+                                      <div class="col-sm-12">
+                                          <button id="save" class="btn btn-success" href="#">Save</button>
+                                      </div>
+                                  </div>-->
+                              </form>
+                              <!--<form class="form-horizontal form-material" id="detailUser">
+                                  <div class="form-group">
+                                      <label id="labelUser"class="col-md-12">Username: </label>
+                                      <div class="col-md-12">
+                                          <input id="newUsername" type="text"  class="form-control form-control-line">
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelPass" class="col-md-12">Old Password: </label>
+                                      <div class="col-md-12">
+                                          <input id="oldPassword" type="password"  class="form-control form-control-line">
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label id="labelPass" class="col-md-12">new Password: </label>
+                                      <div class="col-md-12">
+                                          <input id="newPassword" type="password"  class="form-control form-control-line">
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <button id="editSave" class="btn btn-success" href="#">Save</button>
+                                      </div>
+                                  </div>
+                              </form>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+            </div>
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+        </div>
+    </div>
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/tether.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="js/sidebarmenu.js"></script>
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

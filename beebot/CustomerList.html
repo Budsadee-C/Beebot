@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>Customer List</title>
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.js"></script>
+    <script src="js/customer.js"></script>
+
+</head>
+
+<body class="fix-header card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">
+                        <b>
+                            <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        </b>
+                        <span>
+                         <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                         </span> </a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down">
+                            <form class="app-search p-l-20">
+                                <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a>
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a id="username" class="nav-link text-muted waves-effect waves-dark" href="" data-toggle="dropdown"><img src="assets/images/users/1.jpg" class="profile-pic m-r-5"/></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li>
+                            <a href="index.html" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="profile.html" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>Profile</a>
+                        </li>
+                        <li>
+                            <a href="CustomerList.html" class="waves-effect"><i class="fa fa-users m-r-10" aria-hidden="true"></i>Customer</a>
+                        </li>
+                        <li>
+                            <a href="deviceList.html" class="waves-effect"><i class="fa fa-microchip m-r-10" aria-hidden="true"></i>Spectrokits</a>
+                        </li>
+                        <li>
+                            <a href="../login/login.html" class="waves-effect"><i class="fa fa-gear m-r-10" aria-hidden="true"></i>Log out</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper" id="showCustomer">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <h3 class="text-themecolor m-b-0 m-t-0">Partners List</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active">Partners List</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-block">
+                              <div id="form"></div>
+                              <h4 class="card-title">Partner & Spectrokit</h4>
+                              <h6 class="card-subtitle">Add Partner: <a href="javascript:void(0)" id="addCustomer"><code>เพิ่มลูกค้า</code></a></h6>
+                              <div class="table-responsive">
+                                  <table class="table">
+                                      <thead>
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Username</th>
+                                              <th>email</th>
+                                              <th>Status</th>
+                                              <th>Serial Number</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="customerList"></tbody>
+                                  </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-block">
+                              <div id="form"></div>
+                              <h4 class="card-title">รายชื่อ Partner ทั้งหมด</h4>
+                              <h6 class="card-subtitle">จำนวน : <a href="javascript:void(0)" id="allPartner"><code></code></a></h6>
+                              <div class="table-responsive">
+                                  <table class="table">
+                                      <thead>
+                                          <tr>
+                                              <th>Username</th>
+                                              <th>email</th>
+                                              <th>Status</th>
+                                              <th>หน่วยงาน</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="AllcustomerList"></tbody>
+                                  </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+        </div>
+        <div class="page-wrapper" id="FormCustomer">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <h3 class="text-themecolor m-b-0 m-t-0">Add Partner</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="CustomerList.html">Partners</a></li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                        <div class="card">
+                            <div class="card-block">
+                                <center class="m-t-30"><img src="image/default.jpeg" class="img-circle" width="150" />
+                                  <div class="row text-center justify-content-md-center">
+                                      <div class="col-8" style="margin-top:18px;"><input type="file" id="inputFile"></div>
+                                  </div>
+                                    <!--<h4 class="card-title m-t-10">Hanna Gover</h4>
+                                    <h6 class="card-subtitle">Accoubts Manager Amix corp</h6>
+                                    <div class="row text-center justify-content-md-center">
+                                        <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
+                                        <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
+                                    </div>-->
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card">
+                            <div class="card-block">
+                                <form class="form-horizontal form-material">
+                                  <!--<div class="form-group">
+                                      <label id="labelSerial"class="col-md-12">Serial Number</label>
+                                      <div class="col-md-12">
+                                          <input id="serialNumber" type="text"  class="form-control form-control-line required">
+                                      </div>
+                                  </div>-->
+                                    <div class="form-group">
+                                        <label id="labelName" class="col-md-12">ชื่อ-นามสกุล</label>
+                                        <div class="col-md-12">
+                                            <input id="fullName"type="text"  class="form-control form-control-line">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="labelUser"class="col-md-12">Username</label>
+                                        <div class="col-md-12">
+                                            <input id="Cususername" type="text"  class="form-control form-control-line">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="labelPass" class="col-md-12">Password</label>
+                                        <div class="col-md-12">
+                                            <input id="password" type="text"  class="form-control form-control-line" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-12">ตำแหน่ง-หน้าที่</label>
+                                        <div class="col-sm-12">
+                                          <select id="position" class="form-control form-control-line">
+                                            <option value="assistant">Assistant</option>
+                                            <option value="researcher">Researcher</option>
+                                            <option value="user">General user</option>
+                                          </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example-email" id="labelEmail" class="col-md-12">Email</label>
+                                        <div class="col-md-12">
+                                            <input id="email" type="email" class="form-control form-control-line" name="example-email" id="example-email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="labelTel" class="col-md-12">เบอร์โทรศัพท์</label>
+                                        <div class="col-md-12">
+                                            <input id="telephone" type="text" class="form-control form-control-line">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="labelOrgan" class="col-md-12">หน่วยงาน</label>
+                                        <div class="col-md-12">
+                                            <input id="organize" type="text"  class="form-control form-control-line">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="labelPro" class="col-md-12">จังหวัด</label>
+                                        <div class="col-md-12">
+                                            <input id="province" type="text"  class="form-control form-control-line">
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group">
+                                        <label class="col-md-12">Message</label>
+                                        <div class="col-md-12">
+                                            <textarea rows="5" class="form-control form-control-line"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-12">Select Country</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-control-line">
+                                                <option>London</option>
+                                                <option>India</option>
+                                                <option>Usa</option>
+                                                <option>Canada</option>
+                                                <option>Thailand</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <label id="save" class="btn btn-success" href="javascript:void(0)">Save</label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+            </div>
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+        </div>
+
+
+
+    </div>
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/tether.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="js/sidebarmenu.js"></script>
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

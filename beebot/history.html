@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>Beebot History</title>
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/moment.js"></script>
+    <style>
+    #click {
+      margin-top: 17px;
+      margin-bottom: 15px;
+      margin-left: 3px;
+    }
+    #SerialMeasure{
+      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-right: 3px;
+    }
+    #kindMeasure {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-right: 3px;
+    }
+    #YearhMeasure  {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    #MonthMeasure {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-right:3px;
+    }
+    @media screen and (max-width: 375px) {
+      #YearhMeasure {
+        width: 30%;
+      }
+      #MonthMeasure {
+        width: 48%;
+      }
+      #kindMeasure {
+        width: 48%;
+      }
+    }
+    @media screen and (min-width: 700px) {
+      #YearhMeasure {
+        width: 11%;
+      }
+      #MonthMeasure {
+        width: 15%;
+      }
+    }
+    @media screen and (min-width: 1024px) {
+      #YearhMeasure {
+        width: 11%;
+      }
+      #MonthMeasure {
+        width: 20%;
+      }
+    }
+
+
+    </style>
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="CustomerView.html">
+                        <b>
+                            <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                        </b>
+                        <span>
+                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                        </span>
+                    </a>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down">
+                            <form class="app-search p-l-20">
+                                <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i class="ti-search"></i></a>
+                            </form>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown">
+                            <a id="partnerUser" class="nav-link text-muted waves-effect waves-dark" href="" data-toggle="dropdown"><img src="assets/images/users/1.jpg" class="profile-pic m-r-5"/></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                  <ul id="sidebarnav">
+                      <li>
+                          <a href="CustomerView.html" class="waves-effect"><i class="fa fa-clock-o m-r-10" aria-hidden="true"></i>Dashboard</a>
+                      </li>
+                      <li>
+                          <a href="CustomerProfile.html" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>Profile</a>
+                      </li>
+                      <li>
+                          <a href="history.html" class="waves-effect"><i class="fa fa-calendar m-r-10" aria-hidden="true"></i>History</a>
+                      </li>
+
+                      <li>
+                          <a href="../login/login.html" class="waves-effect"><i class="fa fa-gear m-r-10" aria-hidden="true"></i>Log out</a>
+                      </li>
+                  </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="CustomerView.html">Home</a></li>
+                            <li class="breadcrumb-item active">History</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                  <label id="click" class="btn float-right login_btn btn-success" href="javascript:void(0)">Find</label>
+                                  <select id="YearhMeasure" class="custom-select pull-right">
+                                      <option selected value="2019">2019</option>
+                                      <option value="2020">2020</option>
+                                      <option value="2021">2021</option>
+                                      <option value="2022">2022</option>
+                                      <option value="2023">2023</option>
+                                      <option value="2024">2024</option>
+                                      <option value="2025">2025</option>
+                                      <option value="2026">2026</option>
+                                      <option value="2027">2027</option>
+                                      <option value="2028">2028</option>
+                                      <option value="2029">2029</option>
+                                  </select>
+                                  <select id="MonthMeasure" class="custom-select pull-right">
+                                      <option selected value="1">January</option>
+                                      <option value="2">February</option>
+                                      <option value="3">March</option>
+                                      <option value="4">April</option>
+                                      <option value="5">May</option>
+                                      <option value="6">June</option>
+                                      <option value="7">July</option>
+                                      <option value="8">August</option>
+                                      <option value="9">September</option>
+                                      <option value="10">October</option>
+                                      <option value="11">November</option>
+                                      <option value="12">Demcember</option>
+                                  </select>
+                                  <select id="kindMeasure" class="custom-select pull-right">
+                                      <option selected value="PH">PH</option>
+                                      <option value="Ammonium">Ammonium</option>
+                                      <option value="Chlorine">Chlorine</option>
+                                      <option value="Nitrite">Nitrite</option>
+                                      <option value="Phosphate">Phosphate</option>
+                                  </select>
+                                  <select id="SerialMeasure" class="custom-select pull-right">
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-block">
+                              <div class="chart-container" style="position: relative;">
+                                  <canvas id="chart"></canvas>
+                              </div>
+                              <div class="table-responsive" style="margin-top:15px;" center>
+                                <label id="save" class="btn float-right login_btn btn-success" href="#">Save in Excel</label>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top img-responsive" src="assets/images/big/img1.jpg" alt="Card">
+                            <div class="card-block">
+                                <ul class="list-inline font-14">
+                                    <li class="p-l-0">20 May 2016</li>
+                                    <li><a href="javascript:void(0)" class="link">3 Comment</a></li>
+                                </ul>
+                                <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top img-responsive" src="assets/images/big/img2.jpg" alt="Card">
+                            <div class="card-block">
+                                <ul class="list-inline font-14">
+                                    <li class="p-l-0">20 May 2016</li>
+                                    <li><a href="javascript:void(0)" class="link">3 Comment</a></li>
+                                </ul>
+                                <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top img-responsive" src="assets/images/big/img4.jpg" alt="Card">
+                            <div class="card-block">
+                                <ul class="list-inline font-14">
+                                    <li class="p-l-0">20 May 2016</li>
+                                    <li><a href="javascript:void(0)" class="link">3 Comment</a></li>
+                                </ul>
+                                <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+            </div>
+            <footer class="footer text-center">
+                © 2017 Monster Admin by wrappixel.com
+            </footer>
+        </div>
+    </div>
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/tether.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="js/sidebarmenu.js"></script>
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="assets/plugins/flot/jquery.flot.js"></script>
+    <script src="assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="js/flot-data.js"></script>
+    <script src="assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>
